@@ -6,11 +6,25 @@
 #include <vector>
 #include <string>
 #include <fstream>
+#include <unordered_map>
 #include "kalman_filter.h"
 #include "tools.h"
+#include "sensor.h"
 
 class FusionEKF {
 public:
+	///* state vector
+	VectorXd x_;
+
+	///* state covariance matrix
+	MatrixXd P_;
+
+	///* state transistion matrix
+	MatrixXd F_;
+
+	///* process covariance matrix
+	MatrixXd Q_;
+
   /**
   * Constructor.
   */
@@ -26,10 +40,14 @@ public:
   */
   void ProcessMeasurement(const MeasurementPackage &measurement_pack);
 
+
+  void Predict();
+  void Update(const sensor&,const VectorXd&);
   /**
   * Kalman Filter update and prediction math lives in here.
   */
   KalmanFilter ekf_;
+  std::unordered_map<std::string,sensor> sensors;
 
 private:
   // check whether the tracking toolbox was initialized or not (first measurement)
@@ -37,6 +55,10 @@ private:
 
   // previous timestamp
   long long previous_timestamp_;
+
+	//acceleration noise components
+	float noise_ax;
+	float noise_ay;
 
   // tool object used to compute Jacobian and RMSE
   Tools tools;
