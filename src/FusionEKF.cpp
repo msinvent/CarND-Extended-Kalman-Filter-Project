@@ -79,7 +79,7 @@ FusionEKF::FusionEKF() {
 	sensor laser;
 	sensor radar;
 
-	// defining laseer sensor
+	// defining laser sensor
 	laser.linear_ = true;
 	laser.R_ = MatrixXd::Zero(2,2);
 	laser.R_ << 0.0225, 0,
@@ -139,7 +139,7 @@ void FusionEKF::Update(const sensor& Sensor,const VectorXd& measurement) {
 	MatrixXd H;
 
 	if(Sensor.linear_){
-		y = measurement-Sensor.H_;
+		y = measurement-Sensor.H_*x_;
 		H = Sensor.H_;
 	}else{
 		y = measurement-Sensor.h(x_);
@@ -178,7 +178,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
       /**
       Initialize state.
       */
-    	std::cout<<measurement_pack.raw_measurements_<<"\n";
+//    	std::cout<<measurement_pack.raw_measurements_<<"\n";
   		x_ << measurement_pack.raw_measurements_[0], measurement_pack.raw_measurements_[1], 0, 0;
     }
 //
@@ -210,11 +210,11 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
   //predict
   Predict();
 //  P_ = F_ * P_ * F_.transpose() + Q_;
-
-  std::cout<<Q_<<"\n\n";
-  std::cout<<x_<<"\n\n";
-  std::cout<<P_<<"\n\n";
-  std::cout<<F_<<"\n\n";
+//  std::cout<<"dt : \n"<<dt<<"\n\n";
+//  std::cout<<"Q_ : \n"<<Q_<<"\n\n";
+//  std::cout<<"x_ : \n"<<x_<<"\n\n";
+//  std::cout<<"P_ : \n"<<P_<<"\n\n";
+//  std::cout<<"F_ : \n"<<F_<<"\n\n";
 
 
 //  std::cout<<"Manish Sharma";
@@ -229,11 +229,11 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
    */
 
   if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
-  	std::cout<<"radar\n";
-//  	Update(sensors["radar"],measurement_pack.raw_measurements_);
+//  	std::cout<<"radar : \n"<<measurement_pack.raw_measurements_<<"\n\n";
+  	Update(sensors["radar"],measurement_pack.raw_measurements_);
     // Radar updates
-  } else {
-  	std::cout<<"laser\n";
+  } else if(measurement_pack.sensor_type_ == MeasurementPackage::LASER) {
+//  	std::cout<<"laser : \n"<<measurement_pack.raw_measurements_<<"\n\n";
   	Update(sensors["laser"],measurement_pack.raw_measurements_);
     // Laser updates
   }

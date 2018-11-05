@@ -113,36 +113,36 @@ int main()
 
 					//Push the current estimated x,y positon from the Kalman filter's state vector
 
-//					VectorXd estimate(4);
+					VectorXd estimate(4);
 
-//					double p_x = fusionEKF.ekf_.x_(0);
-//					double p_y = fusionEKF.ekf_.x_(1);
-//					double v1  = fusionEKF.ekf_.x_(2);
-//					double v2 = fusionEKF.ekf_.x_(3);
-//
-//					estimate(0) = p_x;
-//					estimate(1) = p_y;
-//					estimate(2) = v1;
-//					estimate(3) = v2;
-//
-//					estimations.push_back(estimate);
+					double p_x = fusionEKF.x_(0);
+					double p_y = fusionEKF.x_(1);
+					double v1  = fusionEKF.x_(2);
+					double v2 = fusionEKF.x_(3);
 
-					//    	  VectorXd RMSE = tools.CalculateRMSE(estimations, ground_truth);
+					estimate(0) = p_x;
+					estimate(1) = p_y;
+					estimate(2) = v1;
+					estimate(3) = v2;
+
+				  estimations.push_back(estimate);
+
+					VectorXd RMSE = tools.CalculateRMSE(estimations, ground_truth);
 
 					json msgJson;
-					//          msgJson["estimate_x"] = p_x;
-					//          msgJson["estimate_y"] = p_y;
-					//          msgJson["rmse_x"] =  RMSE(0);
-					//          msgJson["rmse_y"] =  RMSE(1);
-					//          msgJson["rmse_vx"] = RMSE(2);
-					//          msgJson["rmse_vy"] = RMSE(3);
+					msgJson["estimate_x"] = p_x;
+					msgJson["estimate_y"] = p_y;
+					msgJson["rmse_x"] =  RMSE(0);
+					msgJson["rmse_y"] =  RMSE(1);
+					msgJson["rmse_vx"] = RMSE(2);
+					msgJson["rmse_vy"] = RMSE(3);
 
-					msgJson["estimate_x"] = 1.0;
-					msgJson["estimate_y"] = 2.0;
-					msgJson["rmse_x"] =  3.0;
-					msgJson["rmse_y"] =  4.0;
-					msgJson["rmse_vx"] = 5.0;
-					msgJson["rmse_vy"] = 6.0;
+//					msgJson["estimate_x"] = 1.0;
+//					msgJson["estimate_y"] = 2.0;
+//					msgJson["rmse_x"] =  3.0;
+//					msgJson["rmse_y"] =  4.0;
+//					msgJson["rmse_vx"] = 5.0;
+//					msgJson["rmse_vy"] = 6.0;
 
 					auto msg = "42[\"estimate_marker\"," + msgJson.dump() + "]";
 					// std::cout << msg << std::endl;
