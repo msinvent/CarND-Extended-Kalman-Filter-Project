@@ -16,6 +16,7 @@ public :
 	MatrixXd H_; // Measurement Matrix
 	MatrixXd R_; // Measurement Covariance Matrix, we get it from the sensor datasheet
 	bool linear_; // this flag is used to check the requirement to initialize the nonlinear h
+	// TODO : Change the nonlinear map to return a vector instead of matrix
 	std::function<MatrixXd(MatrixXd)> h;//nonlinear map from state to measurement;
 	std::function<MatrixXd(MatrixXd)> hj;//linear map from state to measurement;
 };
